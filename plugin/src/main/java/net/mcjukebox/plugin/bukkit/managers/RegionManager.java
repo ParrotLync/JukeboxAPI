@@ -66,6 +66,15 @@ public class RegionManager implements Listener {
 
     public void addRegion(String ID, String URL){
         regions.put(ID.toLowerCase(), URL);
+        ShowManager showManager = MCJukebox.getInstance().getShowManager();
+        HashMap<UUID, String> playersInRegion = MCJukebox.getInstance().getRegionListener().getPlayerInRegion();
+
+        for (UUID uuid : playersInRegion.keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                showManager.getShow(regions.get(ID)).addMember(player, true);
+            }
+        }
     }
 
     public void removeRegion(String ID){
